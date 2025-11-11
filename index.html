@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie List App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 350px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .input-area {
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 10px;
+      width: 70%;
+      border: 2px solid #007bff;
+      border-radius: 5px;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 15px;
+      margin-left: 5px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .clear-btn {
+      background-color: #dc3545;
+    }
+
+    .clear-btn:hover {
+      background-color: #a71d2a;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background-color: #e9ecef;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    li:hover {
+      background-color: #ffc107;
+    }
+
+    #movieCount {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎬 My Movie List</h1>
+
+    <div class="input-area">
+      <input type="text" id="movieInput" placeholder="Enter movie name">
+      <button id="addMovieBtn">Add Movie</button>
+      <button id="clearListBtn" class="clear-btn">Clear List</button>
+    </div>
+
+    <ul id="movieList"></ul>
+    <p id="movieCount">Total Movies: 0</p>
+  </div>
+
+  <script>
+    // Array to store movies
+    let movies = [];
+
+    // DOM Elements
+    const movieInput = document.getElementById("movieInput");
+    const addMovieBtn = document.getElementById("addMovieBtn");
+    const clearListBtn = document.getElementById("clearListBtn");
+    const movieList = document.getElementById("movieList");
+    const movieCount = document.getElementById("movieCount");
+
+    // Add movie
+    addMovieBtn.addEventListener("click", () => {
+      const movieName = movieInput.value.trim();
+
+      if (movieName === "") {
+        alert("Please enter a movie name!");
+        return;
+      }
+
+      movies.push(movieName);
+      movieInput.value = "";
+      updateList();
+    });
+
+    // Update list display
+    function updateList() {
+      movieList.innerHTML = "";
+
+      movies.forEach((movie, index) => {
+        const li = document.createElement("li");
+        li.textContent = movie;
+
+        // Remove movie on click
+        li.addEventListener("click", () => {
+          movies.splice(index, 1);
+          updateList();
+        });
+
+        movieList.appendChild(li);
+      });
+
+      movieCount.textContent = `Total Movies: ${movies.length}`;
+    }
+
+    // Clear the entire list
+    clearListBtn.addEventListener("click", () => {
+      if (movies.length === 0) return;
+
+      if (confirm("Are you sure you want to clear the entire list?")) {
+        movies = [];
+        updateList();
+      }
+    });
+  </script>
+</body>
+</html>
